@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>目标检测与口罩识别</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="/static/jquery-3.1.1.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            setInterval(function(){
+                $.ajax({
+                    url: "/get_image",
+                    type: "GET",
+                    success: function(data){
+                        $("#pic").attr("src","data:image/gif;base64,"+data);
+                    }
+                });
+            }, 1000); // 每隔0.5秒请求一次后端接口
+        });
+    </script>
+    <style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+			background-color: #F2F2F2;
+		}
+		.header {
+			background-color: #333;
+			color: #FFF;
+			padding: 10px;
+			text-align: center;
+			font-size: 28px;
+		}
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			max-width: 1280px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+		.btn {
+			background-color: #FFF;
+			color: #333;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+		.btn:hover {
+			background-color: #333;
+			color: #FFF;
+		}
+		.left, .right {
+			flex: 1 0 50%;
+		}
+		.left {
+			text-align: center;
+			margin-right: 10px;
+			position: relative;
+		}
+		.right {
+			text-align: center;
+			margin-left: 10px;
+			position: relative;
+		}
+		.img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			transition: all 0.3s ease-in-out;
+			z-index: 1;
+		}
+		.img:hover {
+			transform: scale(1.1);
+			box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+			z-index: 2;
+		}
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.5);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			opacity: 0;
+			transition: all 0.3s ease-in-out;
+			z-index: 3;
+		}
+		.overlay:hover {
+			opacity: 1;
+			cursor: pointer;
+		}
+		.overlay p {
+			color: #FFF;
+			font-size: 20px;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+<div class="header">人脸检测与口罩识别系统</div>
+<form action="{{ url_for('mp4_predict') }}" method="post" class="form-inline" enctype="multipart/form-data">
+
+    <div style="text-align: center;font-size: 20px;" >
+        <br>
+        <br>
+        请输入待预测视频:<input type="file" name="video" accept="video/mp4">
+        <div style="text-align: center;font-size: 20px;">
+            <input type="submit" class="form-control" value="提交">
+        </div>
+    </div>
+</form>
+<div style="position: absolute;margin: auto;left:350px">
+    <img src="" alt="" id="pic" width=800px height=550px >
+</div>
+<br><br>
+
+	<!--<script>
+		function uploadVideo() {
+			var fileInput = document.getElementById('file-input');
+			var file = fileInput.files[0];
+			var chunkSize = 1024 * 1024; // 1MB
+			var start = 0;
+			var end = chunkSize;
+			var totalSize = file.size;
+			var videoBlob = new Blob();
+
+			// Read the file in chunks and upload each chunk
+			while (start < totalSize) {
+				var chunk = file.slice(start, end);
+				var formData = new FormData();
+				formData.append('chunk', chunk);
+				formData.append('start', start);
+				formData.append('end', end);
+				formData.append('totalSize', totalSize);
+				uploadChunk(formData);
+				start = end;
+				end = Math.min(start + chunkSize, totalSize);
+			}
+		}
+
+		function uploadChunk(formData) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/mp4_predict/', true);
+			xhr.send(formData);
+		}
+	</script-->
+</body>
+</html>
+

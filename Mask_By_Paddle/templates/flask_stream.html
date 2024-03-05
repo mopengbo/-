@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>目标检测与口罩识别</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="/static/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+  var video = document.getElementById("video");
+  var canvas = document.createElement("canvas");
+  var context = canvas.getContext("2d");
+
+  navigator.mediaDevices.getUserMedia({
+      video: true
+    })
+    .then(function(stream) {
+      video.srcObject = stream;
+      video.play();
+    });
+
+  setInterval(function() {
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    var data = canvas.toDataURL("image/jpeg");
+
+    $.ajax({
+      type: "POST",
+      url: "/stream_predict",
+      data: {
+        image: data
+      },
+      success: function(result) {
+        //$("#result").text(result);
+        $("#result").attr("src","data:image/gif;base64,"+result);
+      }
+    });
+  }, 500);
+});
+    </script>
+    <style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+			background-color: #F2F2F2;
+		}
+		.header {
+			background-color: #333;
+			color: #FFF;
+			padding: 10px;
+			text-align: center;
+			font-size: 28px;
+		}
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			max-width: 1280px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+		.btn {
+			background-color: #FFF;
+			color: #333;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+		.btn:hover {
+			background-color: #333;
+			color: #FFF;
+		}
+		.left, .right {
+			flex: 1 0 50%;
+		}
+		.left {
+			text-align: center;
+			margin-right: 10px;
+			position: relative;
+		}
+		.right {
+			text-align: center;
+			margin-left: 10px;
+			position: relative;
+		}
+		.img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			transition: all 0.3s ease-in-out;
+			z-index: 1;
+		}
+		.img:hover {
+			transform: scale(1.1);
+			box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+			z-index: 2;
+		}
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.5);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			opacity: 0;
+			transition: all 0.3s ease-in-out;
+			z-index: 3;
+		}
+		.overlay:hover {
+			opacity: 1;
+			cursor: pointer;
+		}
+		.overlay p {
+			color: #FFF;
+			font-size: 20px;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+    <div class="header">人脸检测与口罩识别系统</div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <div style="float:left;margin-left:300px;font-size:18px;">
+            摄像头画面
+        </div>
+        <div style="float:right;margin-right:300px;font-size:18px">
+            检测画面
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+    <div>
+        <div  style="display:inline-block;float:left;margin-left:50px">
+        <video id="video"  autoplay>
+        <!--source src="mask_detection.mp4" type="video/mp4"-->
+        </video>
+        </div>
+
+        <div style="display:inline-block;float:right;margin-right:50px">
+        <img src="" alt="" id="result" >
+        </div>
+    </div>
+
+
+</body>
+</html>

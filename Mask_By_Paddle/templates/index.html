@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+CSS技巧
+1. 文字渐变色
+使用CSS的background-clip属性和linear-gradient函数可以实现文字渐变色效果。
+
+复制
+<h1 class="gradient-text">Hello World!</h1>
+
+<style>
+.gradient-text {
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
+2. 图片模糊效果
+使用CSS的filter属性可以实现图片模糊效果。
+
+复制
+<img class="blur-img" src="image.jpg" alt="image">
+
+<style>
+.blur-img {
+  filter: blur(5px);
+}
+</style>
+3. 旋转动画
+使用CSS的transform属性可以实现元素的旋转动画效果。
+
+复制
+<div class="rotate-box"></div>
+
+<style>
+.rotate-box {
+  width: 100px;
+  height: 100px;
+  background-color: #f00;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+JS技巧
+1. 滚动条渐变色
+使用JS可以实现滚动条的渐变色效果。
+
+复制
+<div class="scroll-box">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque in erat sit amet nunc imperdiet dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis vulputate diam vel leo malesuada bibendum. Sed tincidunt, odio eget pellentesque mollis, ante nisl aliquet tellus, id fringilla quam tortor ac lectus. Praesent tellus lacus, pharetra vitae eros ac, facilisis bibendum justo. Nam et est efficitur, auctor orci sit amet, ultricies dolor.</p>
+</div>
+
+<style>
+.scroll-box {
+  width: 300px;
+  height: 200px;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, #eee, #fff);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ddd, #aaa);
+  border-radius: 5px;
+}
+</style>
+
+<script>
+window.onload = function() {
+  var scrollBox = document.querySelector('.scroll-box');
+  var scrollBar = scrollBox.children[0];
+  scrollBox.addEventListener('scroll', function() {
+    var scrollTop = scrollBox.scrollTop;
+    var scrollHeight = scrollBox.scrollHeight;
+    var clientHeight = scrollBox.clientHeight;
+    var percent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+    var thumb = scrollBar.children[0];
+    thumb.style.top = percent + '%';
+  });
+};
+</script>
+2. 鼠标跟随效果
+使用JS可以实现鼠标跟随效果。
+
+复制
+<div class="follow-mouse"></div>
+
+<style>
+.follow-mouse {
+  width: 50px;
+  height: 50px;
+  background-color: #f00;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+
+<script>
+window.onload = function() {
+  var followMouse = document.querySelector('.follow-mouse');
+  document.addEventListener('mousemove', function(event) {
+    var x = event.pageX;
+    var y = event.pageY;
+    followMouse.style.left = x + 'px';
+    followMouse.style.top = y + 'px';
+  });
+};
+</script>
