@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>目标检测</title>
+
+    <meta name="referrer" content="no-referrer">
+    <link rel="stylesheet" href="/static/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body background="/static/view.jpeg">
+<div class="container">
+    <div style="text-align: center">
+        <h1 style="font-family: 'Heiti SC';font-size: 60px">目标检测</h1>{# 字体需要修改 #}
+        <p style="font-size: 20px">基于SSD模型实现</p>
+    </div>
+</div>
+<div class="col-md-2"></div>
+<div class="col-md-8">
+<form action="{{ url_for('main_use') }}" method="post" class="form-inline" enctype="multipart/form-data">
+
+    <div class="form-group col-md-3">
+        请输入待预测图片:<input type="file" name="imgfile" >
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+        <div class="row">
+        <br>
+        <br>
+        <select name="type">
+<!--            <option value="svm">支持向量机</option>-->
+            <option value="ssd">单发多框检测</option>
+            <option value="nb">待定</option>
+            <option value="lstm">待定</option>
+            <option value="test">测试项</option>
+        </select>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+        <input type="submit" class="form-control" value="提交">
+        </div>
+    </div>
+
+    <div>
+        <img src="{{ url_for('static', filename= 'load_img.png') }}">
+    </div>
+
+</form>
+
+</div>
+<div class="form-group">
+    <img src="data:;base64,{{result}}">
+</div>
+<div class="col-md-2"></div>
+</body>
+</html>
